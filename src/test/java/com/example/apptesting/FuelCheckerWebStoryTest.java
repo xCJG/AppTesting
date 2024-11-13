@@ -115,33 +115,7 @@ public class FuelCheckerWebStoryTest {
         wait.until(ExpectedConditions.titleIs("Fuel Checker"));
     }
 
-    @Test(timeOut=60000)
-    public void test_T5() {
-        // Info -> "Standard tank capacity: 1200 litres" and "High safety tank capacity: 800 litres"
-        wait.until(ExpectedConditions.titleIs("Fuel Checker"));
-        wait.until(ExpectedConditions.visibilityOfElementLocated( By.id("Info")));
-        driver.findElement(By.id("Info")).click();
-        wait.until(ExpectedConditions.titleIs("Fuel Checker Information"));
-        wait.until(ExpectedConditions.visibilityOfElementLocated( By.id("body")));
-        assertTrue(
-                driver.findElement( By.id("body")).getAttribute("innerHTML").contains( "Standard tank capacity: 1200 litres")
-                        &&
-                        driver.findElement( By.id("body")).getAttribute("innerHTML").contains( "High safety tank capacity: 800 litres")
-        );
-        wait.until(ExpectedConditions.visibilityOfElementLocated( By.id("goback")));
-        driver.findElement(By.id("goback")).click();
-        wait.until(ExpectedConditions.titleIs("Fuel Checker"));
-    }
 
-    @Test(timeOut=60000)
-    public void test_T6() {
-        // exit -> "Thank you for using FuelChecker."
-        wait.until(ExpectedConditions.titleIs("Fuel Checker"));
-        wait.until(ExpectedConditions.visibilityOfElementLocated( By.id("exitlink")));
-        driver.findElement(By.id("exitlink")).click();
-        wait.until(ExpectedConditions.titleIs("Thank you"));
-        wait.until(ExpectedConditions.visibilityOfElementLocated( By.id("body")));
-        assertTrue(driver.findElement( By.id("body")).getAttribute("innerHTML").contains( "Thank you for using FuelChecker."));
-    }
+    //Add your tests here
 
 }
