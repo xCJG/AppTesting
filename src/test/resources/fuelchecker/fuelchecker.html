@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!--Note on design-->
+<!--This 'website' is designed to demonstrate web application testing only-->
+<!--It uses a mix of MPA (multi page application) and SPA (single page application)-->
+<!--   Different pages are used for: main functionality, information, and exit-->
+<!--   The main functionality uses a single page for both the input form and the results display-->
+<!--For ease of use, the server functionality is simulated in javascript-->
+<!--   This removes the need to configure a server to run the tests-->
+<!--   From the user interface this is not visible: a server-based implementation would present the same behaviour to the user-->
+
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <title>Fuel Checker</title>
+</head>
+<body>
+
+<fieldset style="display:inline;">
+
+<div id="head" style="height:10%;font-size: 40px;text-align: center;">Fuel Checker</div>
+
+<div id="main">
+
+<div style="text-align:center;">
+
+<fieldset style="display:inline;">
+ <legend id="subhead">Enter Data</legend>
+
+<div id="body" align = "center" style="width: 400px ;height: 220px; background: whitesmoke; margin-left: auto ;margin-right: auto ;font-size:15px">
+
+<span style="display: inline-block; vertical-align: middle;">
+
+</br>
+</br>
+<table>
+<tr>
+<td> </p> Litres: </td>
+<td></p><input type="text" id="litres" size =10></td>
+</tr>
+
+<tr>
+<td> High Safety Required: </td>
+<td><input type="checkbox" id="highsafety" size =50></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td ><button size=15 type="button" id="Continue" onclick="Continue()"    style="background-color:white; width:100px; display:none;">Continue</button></td>
+<td ><button size=15 type="button" id="Enter"    onclick="FuelChecker()"       style="background-color:white; width:100px;">Enter</button></td>
+<td ><button size=15 type="button" id="Info"     onclick="Info()"        style="background-color:white; width:100px;">Information</button></td>
+</tr>
+</table>
+
+</br>
+</br>
+
+<table>
+<tr>
+<input type= "text" id= "result" size = 10 disabled style="display: none; width:200px; text-align:center; background-color:white;" >
+</tr>
+</table>
+
+</span>
+
+</div>
+</fieldset>
+</div>
+
+<div id="menu" style ="width: 400px ;margin-left: auto ;margin-right: auto ;text-align: center; ">
+ <ul>
+  <li style ="display: inline"><a id="exitlink" href="javascript:Exit()" style="color:black">Exit</a></li>
+ </ul>
+</div>
+
+</div>
+
+<script>
+
+<!-- Note that this function is implemented here to emulate the server -->
+<!-- This allows the tests to be run without configuring a server -->
+function fits(litres,safety) {
+   rv = "ERROR";
+   if (litres>0)
+      if (safety)
+         if (litres > 800)
+            rv = "NO_FIT";
+         else
+            rv = "FIT";
+      else
+         if (litres > 1200)
+            rv = "NO_FIT";
+         else
+            rv = "FIT";
+   return rv;
+}
+
+function FuelChecker(){
+
+   // Get data from user interface
+
+   var lss = (document.getElementById("litres")).value.trim();
+   if (lss == parseInt(lss,10))
+      ls = parseInt(lss,10);
+   else
+      ls = "Invalid";
+
+   var hs = 0;
+   if (document.getElementById("highsafety").checked)
+      hs = 1;
+
+    // simulate processing server request/response here
+
+    // request processing: call fits() directly instead of using XMLHttpRequest/jQuery/Fetch API
+
+    data = fits(ls,hs);
+
+    // response processing: process data directly rather than via a callback
+
+    result = "Unknown error (" + data + ")";
+	if (data==="FIT")
+	   result = "Fuel fits in tank.";
+	else if (data==="NO_FIT")
+	   result = "Fuel does not fit in tank.";
+	else if (data==="ERROR")
+	   result = "Invalid data values.";
+
+	// Update the user interface
+
+	document.getElementById("result").value = result;
+
+	document.getElementById("Enter").style.display='none';
+	document.getElementById("Continue").style.display='block';
+	document.getElementById("subhead").innerHTML = "Results";
+	document.getElementById("result").style.display='inline';
+	document.getElementById("litres").disabled = true;
+	document.getElementById("highsafety").disabled = true;
+	document.title = "Results";
+
+}
+
+function Continue(){
+	document.getElementById("litres").value ='';
+
+	if (document.getElementById("highsafety").checked)
+		document.getElementById("highsafety").checked = false;
+
+	document.getElementById("Info").style.display='block';
+	document.getElementById("Enter").style.display='block';
+	document.getElementById("Continue").style.display='none';
+	document.getElementById("result").style.display='none';
+	document.getElementById("litres").disabled = false;
+	document.getElementById("highsafety").disabled = false;
+	document.title = "Fuel Checker";
+	document.getElementById("subhead").innerHTML = "Enter Data";
+}
+
+function Info(){
+
+   window.open("information.html", "_self");
+
+}
+
+
+function Exit(){
+
+   window.open("thankYou.html",'_self');
+
+}
+
+</script>
+
+</fieldset>
+
+</body>
+</html>
